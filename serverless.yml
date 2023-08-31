@@ -1,6 +1,9 @@
 service: product-management
 frameworkVersion: '3'
 
+plugins:
+  - serverless-bundle
+
 provider:
   name: aws
   runtime: nodejs18.x

@@ -2,7 +2,7 @@
   "name": "product-management",
   "version": "1.0.0",
   "description": "This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).",
-  "main": "index.tsx",
+  "main": "src/index.ts",
   "scripts": {
     "test": "serverless-bundle test"
   },
@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Bishalsarang/product-management-sf#readme",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.119",
-    "serverless-bundle": "^6.0.0"
+    "serverless-bundle": "^6.0.0",
+    "serverless-offline": "^12.0.4"
   }
 }

@@ -56,3 +56,24 @@ Which should result in response similar to the following:
     "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
 }
 ```
+
+### Serverless Offline
+```bash
+ sls offline
+```
+This [Serverless plugin](https://www.serverless.com/plugins/serverless-offline) emulates AWS λ and API Gateway on your local machine to speed up your development cycles.
+This will expose the API endpoints to test out locally.
+
+```bash
+Function names exposed for local invocation by aws-sdk:
+           * hello: product-management-dev-hello
+
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │                                                                         │
+   │   GET | http://localhost:3000/hello                                     │
+   │   POST | http://localhost:3000/2015-03-31/functions/hello/invocations   │
+   │                                                                         │
+   └─────────────────────────────────────────────────────────────────────────┘
+
+Server ready: http://localhost:3000 🚀
+```

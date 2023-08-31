@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-bundle
+  - serverless-offline
 
 provider:
   name: aws
@@ -10,4 +11,8 @@ provider:
 
 functions:
   hello:
-    handler: index.handler
+    handler: src/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /hello

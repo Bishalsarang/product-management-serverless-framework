@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "es6",
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "lib": ["es2020"],
+    "rootDir": "./",
+    "baseUrl": ".",
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+}

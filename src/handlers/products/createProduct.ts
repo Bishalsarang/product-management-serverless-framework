@@ -2,10 +2,10 @@ import { APIGatewayEvent } from 'aws-lambda';
 
 export const handler = async (event: APIGatewayEvent) => {
   return {
-    statusCode: 200,
+    statusCode: 201,
     body: JSON.stringify(
       {
-        message: 'Go Serverless v3.0! Your function executed successfully!',
+        message: 'Created a product successfully!',
         input: event,
       },
       null,

@@ -10,9 +10,23 @@ provider:
   runtime: nodejs18.x
 
 functions:
-  hello:
-    handler: src/index.handler
+  createProduct:
+    handler: src/handlers/index.createProduct
+    events:
+      - httpApi:
+          method: POST
+          path: /products
+
+  getAllProducts:
+    handler: src/handlers/index.getAllProducts
     events:
       - httpApi:
           method: GET
-          path: /hello
+          path: /products
+
+  deleteProduct:
+    handler: src/handlers/index.deleteProduct
+    events:
+      - httpApi:
+          method: DELETE
+          path: /products/{id}

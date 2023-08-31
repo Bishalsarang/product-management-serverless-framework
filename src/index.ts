@@ -1,4 +1,4 @@
-import {APIGatewayEvent} from "aws-lambda";
+import { APIGatewayEvent } from 'aws-lambda';
 
 export const handler = async (event: APIGatewayEvent) => {
   return {
@@ -9,7 +9,7 @@ export const handler = async (event: APIGatewayEvent) => {
         input: event,
       },
       null,
-      2
+      2,
     ),
   };
 };

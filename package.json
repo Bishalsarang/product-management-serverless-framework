@@ -4,6 +4,7 @@
   "description": "This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).",
   "main": "src/index.ts",
   "scripts": {
+    "prepare": "husky install",
     "test": "serverless-bundle test"
   },
   "repository": {
@@ -18,7 +19,29 @@
   "homepage": "https://github.com/Bishalsarang/product-management-sf#readme",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.119",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.48.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
     "serverless-bundle": "^6.0.0",
-    "serverless-offline": "^12.0.4"
+    "serverless-offline": "^12.0.4",
+    "typescript": "^5.2.2"
+  },
+  "lint-staged": {
+    "src/**/*.ts\" \"test/**/*.ts": [
+      "prettier --config .prettierrc --write",
+      "git add"
+    ],
+    "{src,apps,libs,test}/**/*.ts": [
+      "npx eslint --fix",
+      "git add"
+    ]
   }
 }

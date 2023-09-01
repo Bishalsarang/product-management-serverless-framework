@@ -4,7 +4,9 @@
   "description": "This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).",
   "main": "src/handlers/index.ts",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install && sls dynamodb install",
+    "prestart": "serverless dynamodb start",
+    "start": "serverless dynamodb start & sleep 5 && sls offline",
     "test": "serverless-bundle test"
   },
   "repository": {
@@ -32,6 +34,7 @@
     "prettier": "^3.0.3",
     "serverless-bundle": "^6.0.0",
     "serverless-offline": "^12.0.4",
+    "serverless-dynamodb": "^0.2.43",
     "typescript": "^5.2.2"
   },
   "lint-staged": {
@@ -43,5 +46,8 @@
       "npx eslint --fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1448.0"
   }
 }

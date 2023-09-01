@@ -77,3 +77,25 @@ Function names exposed for local invocation by aws-sdk:
 
 Server ready: http://localhost:3000 🚀
 ```
+
+### Dynamodb Local
+
+1. Install the dynamodb local using:
+
+```bash
+sls dynamodb install
+```
+
+2. Run the dynamodb local
+
+```bash
+sls dynamodb start
+```
+
+```
+Running "serverless" from node_modules
+Dynamodb Local Started, Visit: http://localhost:8000/shell
+```
+
+3. Add connection in NoSQL Workbench
+   ![img.png](assets/img.png)

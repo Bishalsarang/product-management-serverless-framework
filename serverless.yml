@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-bundle
+  - serverless-dynamodb
   - serverless-offline
 
 provider:
@@ -44,3 +45,10 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+custom:
+  serverless-dynamodb:
+    stages:
+      - dev
+    port: 8000
+    docker: false
+    migrate: true

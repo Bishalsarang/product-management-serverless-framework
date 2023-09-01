@@ -1,15 +1,14 @@
 import { APIGatewayEvent } from 'aws-lambda';
 
+import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
+
 export const handler = async (event: APIGatewayEvent) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Product deleted successfully!',
-        input: event,
-      },
-      null,
-      2,
-    ),
-  };
+  const { id } = event.pathParameters as unknown as { id: '' };
+
+  return await dynamoDbDocumentClient
+    .delete({
+      TableName: process.env.PRODUCTS_TABLE_NAME,
+      Key: { id },
+    })
+    .promise();
 };

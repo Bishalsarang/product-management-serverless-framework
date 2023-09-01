@@ -5,8 +5,7 @@
   "main": "src/handlers/index.ts",
   "scripts": {
     "prepare": "husky install && sls dynamodb install",
-    "prestart": "serverless dynamodb start",
-    "start": "serverless dynamodb start & sleep 5 && sls offline",
+    "start": "sls offline",
     "test": "serverless-bundle test"
   },
   "repository": {
@@ -33,8 +32,8 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "serverless-bundle": "^6.0.0",
-    "serverless-offline": "^12.0.4",
     "serverless-dynamodb": "^0.2.43",
+    "serverless-offline": "^12.0.4",
     "typescript": "^5.2.2"
   },
   "lint-staged": {
@@ -48,6 +47,7 @@
     ]
   },
   "dependencies": {
-    "aws-sdk": "^2.1448.0"
+    "aws-sdk": "^2.1448.0",
+    "dotenv": "^16.3.1"
   }
 }

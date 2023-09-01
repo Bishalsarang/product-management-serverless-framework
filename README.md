@@ -99,3 +99,24 @@ Dynamodb Local Started, Visit: http://localhost:8000/shell
 
 3. Add connection in NoSQL Workbench
    ![img.png](assets/img.png)
+
+### Loading environment variables
+
+1. In `serverless.yml`, set
+
+```yaml
+service: product-management
+frameworkVersion: '3'
+
+plugins:
+   - serverless-bundle
+   - serverless-dynamodb
+   - serverless-offline
+
+useDotenv: true
+
+provider:
+   name: aws
+   runtime: nodejs18.x
+...
+```

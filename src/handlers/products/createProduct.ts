@@ -1,7 +1,8 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
-import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
 import * as process from 'process';
+
+import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
 export const handler = async (): Promise<APIGatewayProxyResult> => {
   const item = {

@@ -1,11 +1,7 @@
-import { z } from 'zod';
-
-import { envSchema } from './schema/envSchema';
-
-type EnvSchemaType = z.infer<typeof envSchema>;
+import { Env } from './types';
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends EnvSchemaType {}
+    interface ProcessEnv extends Env {}
   }
 }

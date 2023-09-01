@@ -1,13 +1,19 @@
-import { APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 import * as process from 'process';
 
 import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
-export const handler = async (): Promise<APIGatewayProxyResult> => {
-  const item = {
-    id: '1',
-    name: 'Asus Zephyrus',
+import { Product, CreateProductRequest } from '../../types';
+
+export const handler = async (
+  event: APIGatewayEvent,
+): Promise<APIGatewayProxyResult> => {
+  const createProductRequest = event.body as unknown as CreateProductRequest;
+
+  const item: Product = {
+    ...createProductRequest,
+    id: 'uuid',
   };
 
   await dynamoDbDocumentClient

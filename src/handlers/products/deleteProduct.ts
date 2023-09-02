@@ -3,16 +3,21 @@ import { APIGatewayEvent } from 'aws-lambda';
 import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
 import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
+import * as createError from 'http-errors';
 
 async function deleteProduct(event: APIGatewayEvent) {
   const { id } = event.pathParameters as unknown as { id: '' };
 
-  await dynamoDbDocumentClient
-    .delete({
-      TableName: process.env.PRODUCTS_TABLE_NAME,
-      Key: { id },
-    })
-    .promise();
+  try {
+    await dynamoDbDocumentClient
+      .delete({
+        TableName: process.env.PRODUCTS_TABLE_NAME,
+        Key: { id },
+      })
+      .promise();
+  } catch (e) {
+    throw new createError.InternalServerError(e);
+  }
 
   return {
     statusCode: 204,

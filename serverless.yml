@@ -14,7 +14,18 @@ provider:
   memorySize: 256
   environment:
     PRODUCTS_TABLE_NAME: ${env:PRODUCTS_TABLE_NAME}
-    
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+      Resource:
+        - ${self:custom.ProductsTable.arn}
+
 functions:
   hello:
     handler: src/handlers/index.hello
@@ -46,7 +57,7 @@ functions:
 
 resources:
   Resources:
-    ProductTable:
+    ProductsTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${env:PRODUCTS_TABLE_NAME}
@@ -58,6 +69,9 @@ resources:
           - AttributeName: id
             KeyType: HASH
 custom:
+  ProductsTable:
+    name: !Ref ProductsTable
+    arn: !GetAtt ProductsTable.Arn
   serverless-dynamodb:
     stages:
       - dev

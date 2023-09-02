@@ -1,4 +1,5 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as process from 'process';
 
@@ -15,7 +16,7 @@ async function createProduct(
 
   const item: Product = {
     ...createProductRequest,
-    id: 'uuid',
+    id: uuidv4(),
   };
 
   await dynamoDbDocumentClient

@@ -15,8 +15,8 @@ async function deleteProduct(event: APIGatewayEvent) {
         Key: { id },
       })
       .promise();
-  } catch (e) {
-    throw new createError.InternalServerError(e);
+  } catch (error) {
+    throw new createError.InternalServerError(error.message);
   }
 
   return {

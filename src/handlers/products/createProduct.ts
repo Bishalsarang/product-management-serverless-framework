@@ -18,7 +18,7 @@ async function createProduct(
   try {
     createProductRequestSchema.parse(createProductRequest);
   } catch (error) {
-    throw new createError.BadRequest(error);
+    throw new createError.BadRequest(error.message);
   }
 
   const item: Product = {
@@ -33,8 +33,8 @@ async function createProduct(
         TableName: process.env.PRODUCTS_TABLE_NAME,
       })
       .promise();
-  } catch (e) {
-    throw new createError.InternalServerError(e);
+  } catch (error) {
+    throw new createError.InternalServerError(error.message);
   }
 
   return {

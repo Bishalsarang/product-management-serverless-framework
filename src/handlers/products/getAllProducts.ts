@@ -24,8 +24,8 @@ async function getAllProducts(event: APIGatewayEvent) {
 
       lastEvaluatedKey = data.LastEvaluatedKey;
     } while (lastEvaluatedKey != null);
-  } catch (e) {
-    throw new createError.InternalServerError(e);
+  } catch (error) {
+    throw new createError.InternalServerError(error.message);
   }
 
   return {

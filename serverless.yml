@@ -16,6 +16,13 @@ provider:
     PRODUCTS_TABLE_NAME: ${env:PRODUCTS_TABLE_NAME}
     
 functions:
+  hello:
+    handler: src/handlers/index.hello
+    events:
+      - httpApi:
+          method: GET
+          path: /
+
   createProduct:
     handler: src/handlers/index.createProduct
     events:

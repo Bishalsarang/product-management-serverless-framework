@@ -6,7 +6,8 @@
   "scripts": {
     "prepare": "husky install && sls dynamodb install",
     "start": "sls offline",
-    "test": "serverless-bundle test"
+    "test": "serverless-bundle test",
+    "deploy": "sls deploy"
   },
   "repository": {
     "type": "git",

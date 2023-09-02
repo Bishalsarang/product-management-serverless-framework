@@ -6,7 +6,9 @@ on:
       - main
 env:
   PRODUCTS_TABLE_NAME: ${{secrets.PRODUCTS_TABLE_NAME}}
-  
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,4 +19,4 @@ jobs:
           npm install
       - name: Deploy
         run:
-          npm deploy
+          npm run deploy

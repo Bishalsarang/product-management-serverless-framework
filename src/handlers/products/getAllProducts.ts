@@ -1,8 +1,9 @@
 import { AttributeMap, DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
+import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
 
-export const handler = async () => {
+async function getAllProducts() {
   let items: AttributeMap[] = [];
   let lastEvaluatedKey: DocumentClient.Key | undefined;
 
@@ -25,4 +26,6 @@ export const handler = async () => {
     statusCode: 200,
     body: JSON.stringify(items),
   };
-};
+}
+
+export const handler = handlerWithMiddleware(getAllProducts);

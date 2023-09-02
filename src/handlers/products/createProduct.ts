@@ -6,9 +6,11 @@ import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
 import { Product, CreateProductRequest } from '../../types';
 
-export const handler = async (
+import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
+
+async function createProduct(
   event: APIGatewayEvent,
-): Promise<APIGatewayProxyResult> => {
+): Promise<APIGatewayProxyResult> {
   const createProductRequest = event.body as unknown as CreateProductRequest;
 
   const item: Product = {
@@ -27,4 +29,6 @@ export const handler = async (
     statusCode: 201,
     body: JSON.stringify(item),
   };
-};
+}
+
+export const handler = handlerWithMiddleware(createProduct);

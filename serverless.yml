@@ -91,20 +91,6 @@ resources:
         OwnershipControls:
           Rules:
             - ObjectOwnership: ObjectWriter
-        # Set the CORS policy
-        CorsConfiguration:
-          CorsRules:
-            - AllowedOrigins:
-                - '*'
-              AllowedHeaders:
-                - '*'
-              AllowedMethods:
-                - GET
-                - PUT
-                - POST
-                - DELETE
-                - HEAD
-              MaxAge: 3000
 custom:
   ProductsTable:
     name: !Ref ProductsTable

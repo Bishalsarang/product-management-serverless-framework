@@ -1,0 +1,23 @@
+ProductsTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: ${env:PRODUCTS_TABLE_NAME, 'products'}
+    BillingMode: PAY_PER_REQUEST
+    AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+    KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+
+AuditLogTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${env:AUDIT_LOG_TABLE_NAME, 'audit-log'}
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S

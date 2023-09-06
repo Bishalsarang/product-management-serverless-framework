@@ -13,8 +13,9 @@ provider:
   runtime: nodejs16.x
   memorySize: 256
   environment:
-    PRODUCTS_TABLE_NAME: ${env:PRODUCTS_TABLE_NAME}
+    PRODUCTS_TABLE_NAME: ${self:custom.ProductsTable.name}
     PRODUCTS_BUCKET_NAME: ${self:custom.ProductsBucket.name}
+    AUDIT_LOG_TABLE_NAME: ${self:custom.AuditLogTable.name}
   httpApi:
     cors: true
   iamRoleStatements:
@@ -36,61 +37,16 @@ provider:
               - "/*"
 
 functions:
-  hello:
-    handler: src/handlers/index.hello
-    events:
-      - httpApi:
-          method: GET
-          path: /
-
-  createProduct:
-    handler: src/handlers/index.createProduct
-    events:
-      - httpApi:
-          method: POST
-          path: /products
-
-  getAllProducts:
-    handler: src/handlers/index.getAllProducts
-    events:
-      - httpApi:
-          method: GET
-          path: /products
-
-  deleteProduct:
-    handler: src/handlers/index.deleteProduct
-    events:
-      - httpApi:
-          method: DELETE
-          path: /products/{id}
-
-  uploadProductImage:
-    handler: src/handlers/index.uploadProductImage
-    events:
-      - httpApi:
-          method: PATCH
-          path: /products/image
+  - ${file(functions/Products.yml)}
+  - ${file(functions/Misc.yml)}
 
 resources:
   Resources:
-    ProductsTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${env:PRODUCTS_TABLE_NAME}
-        BillingMode: PAY_PER_REQUEST
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-
-    ProductsBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        OwnershipControls:
-          Rules:
-            - ObjectOwnership: ObjectWriter
+    ProductsTable: ${file(resources/DynamodbTable.yml):ProductsTable}
+    AuditLogTable: ${file(resources/DynamodbTable.yml):AuditLogTable}
+    ProductsBucket: ${file(resources/S3Buckets.yml):ProductsBucket}
+    ProductEventsBus: ${file(resources/EventBus.yml):ProductEventsBus}
+    
 custom:
   ProductsTable:
     name: !Ref ProductsTable
@@ -98,7 +54,9 @@ custom:
   ProductsBucket:
     name: !Ref ProductsBucket
     arn: !GetAtt ProductsBucket.Arn
-
+  AuditLogTable:
+    name: !Ref AuditLogTable
+    arn: !GetAtt AuditLogTable.Arn
   serverless-dynamodb:
     stages:
       - dev

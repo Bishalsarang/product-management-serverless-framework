@@ -35,7 +35,7 @@
   },
   "rules": {
     "import/extensions": 0,
-    "no-console": "error",
+    "no-console": "warn",
     "import/no-extraneous-dependencies": 0,
     "import/prefer-default-export": 0,
     "no-unused-vars": "off",

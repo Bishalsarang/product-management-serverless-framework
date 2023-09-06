@@ -1,0 +1,6 @@
+ProductsBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    OwnershipControls:
+      Rules:
+        - ObjectOwnership: ObjectWriter

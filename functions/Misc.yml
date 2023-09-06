@@ -1,0 +1,15 @@
+hello:
+  handler: src/handlers/index.hello
+  events:
+    - httpApi:
+        method: GET
+        path: /
+
+logAudit:
+  handler: src/handlers/index.logAudit
+  events:
+    - eventBridge:
+        eventBus: !Ref ProductEventsBus
+        pattern:
+          source:
+            - product.created

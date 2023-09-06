@@ -1,0 +1,4 @@
+ProductEventsBus:
+  Type: AWS::Events::EventBus
+  Properties:
+    Name: audit-log-bus

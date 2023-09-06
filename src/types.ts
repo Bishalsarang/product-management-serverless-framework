@@ -20,9 +20,16 @@ interface uploadImageRequest {
   base64: 'string';
 }
 
+interface EventBridgeEVent {
+  source: string;
+  detail: string;
+  detailType: object;
+}
+
 export {
   Env,
   Product,
+  EventBridgeEVent,
   uploadImageRequest,
   CreateProductRequest,
   ApiGatewayLambdaHandler,

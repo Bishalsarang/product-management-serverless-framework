@@ -14,6 +14,7 @@ provider:
   memorySize: 256
   environment:
     PRODUCTS_TABLE_NAME: ${env:PRODUCTS_TABLE_NAME}
+    PRODUCTS_BUCKET: ${self:custom.ProductsBucket.arn}
   httpApi:
     cors: true
   iamRoleStatements:
@@ -25,8 +26,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
+        - S3:*
       Resource:
         - ${self:custom.ProductsTable.arn}
+        - ${self:custom.ProductsBucket.arn}
 
 functions:
   hello:
@@ -70,10 +73,32 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+
+    ProductsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        # Set the CORS policy
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
 custom:
   ProductsTable:
     name: !Ref ProductsTable
     arn: !GetAtt ProductsTable.Arn
+  ProductsBucket:
+    name: !Ref ProductsBucket
+    arn: !GetAtt ProductsBucket.Arn
+
   serverless-dynamodb:
     stages:
       - dev

@@ -1,7 +1,9 @@
+import { APIGatewayProxyResult } from 'aws-lambda';
+
 import { handler as createProduct } from './products/createProduct';
 import { handler as deleteProduct } from './products/deleteProduct';
 import { handler as getAllProducts } from './products/getAllProducts';
-import { APIGatewayProxyResult } from 'aws-lambda';
+import { handler as uploadProductImage } from './products/uploadProductImage';
 
 async function hello(): Promise<APIGatewayProxyResult> {
   return {
@@ -10,4 +12,10 @@ async function hello(): Promise<APIGatewayProxyResult> {
   };
 }
 
-export { createProduct, deleteProduct, getAllProducts, hello };
+export {
+  hello,
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  uploadProductImage,
+};

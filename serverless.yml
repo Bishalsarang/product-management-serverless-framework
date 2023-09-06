@@ -14,7 +14,7 @@ provider:
   memorySize: 256
   environment:
     PRODUCTS_TABLE_NAME: ${env:PRODUCTS_TABLE_NAME}
-    PRODUCTS_BUCKET: ${self:custom.ProductsBucket.arn}
+    PRODUCTS_BUCKET_NAME: ${self:custom.ProductsBucket.name}
   httpApi:
     cors: true
   iamRoleStatements:
@@ -26,10 +26,14 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
-        - S3:*
+        - s3:*
       Resource:
         - ${self:custom.ProductsTable.arn}
         - ${self:custom.ProductsBucket.arn}
+        - Fn::Join:
+            - ""
+            - - ${self:custom.ProductsBucket.arn}
+              - "/*"
 
 functions:
   hello:
@@ -60,6 +64,13 @@ functions:
           method: DELETE
           path: /products/{id}
 
+  uploadProductImage:
+    handler: src/handlers/index.uploadProductImage
+    events:
+      - httpApi:
+          method: PATCH
+          path: /products/image
+
 resources:
   Resources:
     ProductsTable:
@@ -77,6 +88,9 @@ resources:
     ProductsBucket:
       Type: AWS::S3::Bucket
       Properties:
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
         # Set the CORS policy
         CorsConfiguration:
           CorsRules:

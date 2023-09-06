@@ -15,4 +15,15 @@ type ApiGatewayLambdaHandler = (
   event: APIGatewayProxyEvent,
 ) => Promise<APIGatewayProxyResult>;
 
-export { Env, Product, CreateProductRequest, ApiGatewayLambdaHandler };
+interface uploadImageRequest {
+  filename: 'string';
+  base64: 'string';
+}
+
+export {
+  Env,
+  Product,
+  uploadImageRequest,
+  CreateProductRequest,
+  ApiGatewayLambdaHandler,
+};

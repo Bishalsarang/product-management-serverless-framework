@@ -20,7 +20,7 @@ async function createProduct(
   try {
     createProductRequestSchema.parse(createProductRequest);
   } catch (error) {
-    throw new createError.BadRequest(error.message);
+    throw new createError.BadRequest(error);
   }
 
   const item: Product = {
@@ -36,7 +36,7 @@ async function createProduct(
       })
       .promise();
   } catch (error) {
-    throw new createError.InternalServerError(error.message);
+    throw new createError.InternalServerError(error);
   }
 
   await addToAuditLog({

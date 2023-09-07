@@ -28,7 +28,8 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
-        - s3:*
+        - s3:PutObject
+        - s3:PutObjectAcl
         - events:PutEvents
       Resource:
         - ${self:custom.ProductsTable.arn}

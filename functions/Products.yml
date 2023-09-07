@@ -24,4 +24,4 @@ uploadProductImage:
   events:
     - httpApi:
         method: PATCH
-        path: /products/image
+        path: /products/image/{id}

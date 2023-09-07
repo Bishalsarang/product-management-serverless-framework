@@ -26,7 +26,7 @@ async function deleteProduct(event: APIGatewayEvent) {
       })
       .promise();
   } catch (error) {
-    throw new createError.InternalServerError(error.message);
+    throw new createError.InternalServerError(error);
   }
 
   await addToAuditLog({

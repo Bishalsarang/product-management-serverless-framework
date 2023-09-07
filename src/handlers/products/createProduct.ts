@@ -8,8 +8,8 @@ import * as createError from 'http-errors';
 import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
 import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
+import { Product, CreateProductRequest } from '../../types';
 import { createProductRequestSchema } from '../../schema/productSchema';
-import { Product, CreateProductRequest, AuditLogChangeType } from '../../types';
 
 import { addToAuditLog } from '../../utils/auditLogs.utils';
 

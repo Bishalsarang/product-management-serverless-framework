@@ -25,9 +25,10 @@ async function uploadImage(
       Key: { id },
     })
     .promise();
+
   const item = itemPromise.Item as Product;
-  console.info(item);
   const fileName = `${filename}_${new Date().getTime()}`;
+
   const data: PutObjectRequest = {
     Bucket: process.env.PRODUCTS_BUCKET_NAME,
     Key: fileName,
@@ -37,8 +38,7 @@ async function uploadImage(
   };
 
   try {
-    const s3Response = await s3.putObject(data).promise();
-    console.info(JSON.stringify(s3Response));
+    await s3.putObject(data).promise();
   } catch (err) {
     throw new createError.InternalServerError(err);
   }

@@ -28,8 +28,6 @@ async function logAudit(
     modifiedAt: new Date().toISOString(),
   };
 
-  console.info(JSON.stringify(event));
-  console.info(JSON.stringify(item));
   try {
     await dynamoDbDocumentClient
       .put({

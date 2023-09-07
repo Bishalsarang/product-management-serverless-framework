@@ -49,11 +49,18 @@ interface AuditLogActionCreateRequest {
   action: AuditLogChangeType;
 }
 
+interface CreateProductRequestDTO {
+  product: CreateProductRequest;
+  base64ImageString: string;
+  filename: string;
+}
+
 export {
   Env,
   Product,
   AuditLog,
   AuditLogChangeType,
+  CreateProductRequestDTO,
   EventBridgeEVent,
   UploadImageRequest,
   CreateProductRequest,

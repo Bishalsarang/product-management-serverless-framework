@@ -1,17 +1,16 @@
 import * as process from 'process';
 
-import * as AWS from 'aws-sdk';
-import { PutObjectRequest } from 'aws-sdk/clients/s3';
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+
+import * as createError from 'http-errors';
 
 import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
 
 import { Product, UploadImageRequest } from '../../types';
 import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
-import * as createError from 'http-errors';
-import { addToAuditLog } from '../../utils/auditLogs.utils';
 
-const s3 = new AWS.S3();
+import { uploadToS3 } from '../../utils/s3.util';
+import { addToAuditLog } from '../../utils/auditLogs.utils';
 
 async function uploadImage(
   event: APIGatewayEvent,
@@ -28,23 +27,11 @@ async function uploadImage(
 
   const item = itemPromise.Item as Product;
   const fileName = `${filename}_${new Date().getTime()}`;
+  const imageURL = await uploadToS3(fileName, base64);
 
-  const data: PutObjectRequest = {
-    Bucket: process.env.PRODUCTS_BUCKET_NAME,
-    Key: fileName,
-    Body: Buffer.from(base64, 'base64'),
-    ContentEncoding: 'base64',
-    ACL: 'public-read',
-  };
-
-  try {
-    await s3.putObject(data).promise();
-  } catch (err) {
-    throw new createError.InternalServerError(err);
-  }
   const updatedProductItem: Product = {
     ...item,
-    imageURL: `https://${process.env.PRODUCTS_BUCKET_NAME}.s3.amazonaws.com/${fileName}`,
+    imageURL,
   };
 
   try {

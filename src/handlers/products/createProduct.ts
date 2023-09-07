@@ -8,24 +8,32 @@ import * as createError from 'http-errors';
 import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
 import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
-import { Product, CreateProductRequest } from '../../types';
+import { Product, CreateProductRequestDTO } from '../../types';
 import { createProductRequestSchema } from '../../schema/productSchema';
 
 import { addToAuditLog } from '../../utils/auditLogs.utils';
 
+import { uploadToS3 } from '../../utils/s3.util';
+
 async function createProduct(
   event: APIGatewayEvent,
 ): Promise<APIGatewayProxyResult> {
-  const createProductRequest = event.body as unknown as CreateProductRequest;
+  const createProductRequest = event.body as unknown as CreateProductRequestDTO;
   try {
-    createProductRequestSchema.parse(createProductRequest);
+    createProductRequestSchema.parse(createProductRequest.product);
   } catch (error) {
     throw new createError.BadRequest(error);
   }
 
+  const imageURL = await uploadToS3(
+    createProductRequest.filename,
+    createProductRequest.base64ImageString,
+  );
+
   const item: Product = {
-    ...createProductRequest,
+    ...createProductRequest.product,
     id: uuidv4(),
+    imageURL,
   };
 
   try {

@@ -1,67 +1,79 @@
-# Serverless Framework AWS NodeJS Example
+# Product CRUD using Serverless Framework
 
-This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).
+This repository contains a simple CRUD application using serverless framework.
 
-## Usage
+## Features
 
-### Deployment
+1. CRUD for `products`
+2. Audit Log for product created/deleted/updated
+3. Serverless offline and dynamodb for local development
+4. Github Actions for auto deployment
+5. Typescript
+6. Static Test using Eslint, Prettier & Husky
+7. Schema validation with `zod`
+8. Middy middleware for normalizing request and handling errors
 
-In order to deploy the example, you need to run the following command:
+## Architecture Diagram
 
-```
-$ serverless deploy
-```
+![architecture-diagram.png](assets%2Farchitecture-diagram.png)
 
-After running deploy, you should see output similar to:
+The following AWS Services are involved:
 
-```bash
-Deploying aws-node-project to stage dev (us-east-1)
+1. AWS API Gateway
+   1. Expose `/products` endpoint
+2. AWS Lambda
+   1. CRUD for products
+   2. Lambda to log audit logs when product is created, updated, deleted
+3. DynamoDB
+   1.ProductsTable to store products data
+   1. AuditLogTable to store generic audit log
+4. EventBridge
+   1. Events are added by products lambda function on successful add, delete and update
+   2. The event triggers the lambda function which writes the audit log to the database
+5. Amazon S3
+   1. Stores product images
 
-✔ Service deployed to stack aws-node-project-dev (112s)
+## Schema
 
-functions:
-  hello: aws-node-project-dev-hello (1.5 kB)
-```
+```ts
+// Product Schema
+type Product = {
+   id: string;
+   name: string;
+   price: number;
+   description?: string;
+   imageURL?: string;
+}
 
-### Invocation
-
-After successful deployment, you can invoke the deployed function by using the following command:
-
-```bash
-serverless invoke --function hello
-```
-
-Which should result in response similar to the following:
-
-```json
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": {}\n}"
+// Audit Log Schema
+type AuditLog = {
+   id: string;
+   entityName: "products";
+   changeType: "created" | "deleted" | "updated";
+   modifiedAt: string;
+   entityId?: string | undefined;
+   oldValue?: string | undefined;
+   newValue?: string | undefined;
 }
 ```
+
+## Endpoints
+
+1. `POST` /products
+2. `GET` /products
+3. `DELETE` products/:id
+4. `PATCH` products/image/:id
 
 ### Local development
 
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
-```
-
 ### Serverless Offline
+
 ```bash
  sls offline
 ```
-This [Serverless plugin](https://www.serverless.com/plugins/serverless-offline) emulates AWS λ and API Gateway on your local machine to speed up your development cycles.
+
+This [Serverless plugin](https://www.serverless.com/plugins/serverless-offline) emulates AWS λ and API Gateway on your
+local machine to speed up your development cycles.
 This will expose the API endpoints to test out locally.
 
 ```bash
@@ -119,4 +131,55 @@ provider:
    name: aws
    runtime: nodejs18.x
 ...
+```
+
+You can invoke your function locally by using the following command:
+
+```bash
+serverless invoke local --function hello
+```
+
+Which should result in response similar to the following:
+
+```
+{
+    "statusCode": 200,
+    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
+}
+```
+
+### Deployment
+
+In order to deploy the example, you need to run the following command:
+
+```
+$ serverless deploy
+```
+
+After running deploy, you should see output similar to:
+
+```bash
+Deploying aws-node-project to stage dev (us-east-1)
+
+✔ Service deployed to stack aws-node-project-dev (112s)
+
+functions:
+  hello: aws-node-project-dev-hello (1.5 kB)
+```
+
+### Invocation
+
+After successful deployment, you can invoke the deployed function by using the following command:
+
+```bash
+serverless invoke --function hello
+```
+
+Which should result in response similar to the following:
+
+```json
+{
+    "statusCode": 200,
+    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": {}\n}"
+}
 ```

@@ -1,18 +1,19 @@
-import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
-import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
-import * as AWS from 'aws-sdk';
-import { uploadImageRequest } from '../../types';
-
 import * as process from 'process';
 
+import * as AWS from 'aws-sdk';
 import { PutObjectRequest } from 'aws-sdk/clients/s3';
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+
+import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
+
+import { UploadImageRequest } from '../../types';
 
 const s3 = new AWS.S3();
 
 async function uploadImage(
   event: APIGatewayEvent,
 ): Promise<APIGatewayProxyResult> {
-  const { base64, filename } = event.body as unknown as uploadImageRequest;
+  const { base64, filename } = event.body as unknown as UploadImageRequest;
 
   const data: PutObjectRequest = {
     Bucket: process.env.PRODUCTS_BUCKET_NAME,

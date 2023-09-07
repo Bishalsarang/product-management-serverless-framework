@@ -5,7 +5,7 @@ import { handler as deleteProduct } from './products/deleteProduct';
 import { handler as getAllProducts } from './products/getAllProducts';
 import { handler as uploadProductImage } from './products/uploadProductImage';
 
-import { handler as logAudit } from './logAudit';
+import { handler as logAudit } from './auditLogs/logAudit';
 
 async function hello(): Promise<APIGatewayProxyResult> {
   return {

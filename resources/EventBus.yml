@@ -1,4 +1,4 @@
 ProductEventsBus:
   Type: AWS::Events::EventBus
   Properties:
-    Name: audit-log-bus
+    Name: ${env:EVENT_BUS_NAME, 'audit-log-bus'}

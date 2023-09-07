@@ -1,9 +1,10 @@
 import { APIGatewayEvent } from 'aws-lambda';
 import { AttributeMap, DocumentClient } from 'aws-sdk/clients/dynamodb';
 
-import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
-import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
 import * as createError from 'http-errors';
+
+import handlerWithMiddleware from '../../middlewares/handlerWithMiddleware';
+import dynamoDbDocumentClient from '../../services/dynamoDbDocumentClient';
 
 async function getAllProducts(event: APIGatewayEvent) {
   let items: AttributeMap[] = [];

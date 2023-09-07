@@ -12,4 +12,5 @@ logAudit:
         eventBus: !Ref ProductEventsBus
         pattern:
           source:
-            - product.created
+            - products
+

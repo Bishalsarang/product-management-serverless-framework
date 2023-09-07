@@ -16,6 +16,7 @@ provider:
     PRODUCTS_TABLE_NAME: ${self:custom.ProductsTable.name}
     PRODUCTS_BUCKET_NAME: ${self:custom.ProductsBucket.name}
     AUDIT_LOG_TABLE_NAME: ${self:custom.AuditLogTable.name}
+    EVENT_BUS_NAME: ${self:custom.ProductEventsBus.name}
   httpApi:
     cors: true
   iamRoleStatements:
@@ -28,8 +29,11 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
         - s3:*
+        - events:PutEvents
       Resource:
         - ${self:custom.ProductsTable.arn}
+        - ${self:custom.AuditLogTable.arn}
+        - arn:aws:events:*
         - ${self:custom.ProductsBucket.arn}
         - Fn::Join:
             - ""
@@ -46,7 +50,7 @@ resources:
     AuditLogTable: ${file(resources/DynamodbTable.yml):AuditLogTable}
     ProductsBucket: ${file(resources/S3Buckets.yml):ProductsBucket}
     ProductEventsBus: ${file(resources/EventBus.yml):ProductEventsBus}
-    
+
 custom:
   ProductsTable:
     name: !Ref ProductsTable
@@ -57,6 +61,9 @@ custom:
   AuditLogTable:
     name: !Ref AuditLogTable
     arn: !GetAtt AuditLogTable.Arn
+  ProductEventsBus:
+    name: !Ref ProductEventsBus
+    arn: !GetAtt ProductEventsBus.Arn
   serverless-dynamodb:
     stages:
       - dev

@@ -7,30 +7,57 @@ import {
   productSchema,
   createProductRequestSchema,
 } from './schema/productSchema';
+import {
+  auditLogSchema,
+  createAuditLogRequestSchema,
+} from './schema/auditLogSchema';
 
 type Env = z.infer<typeof envSchema>;
 type Product = z.infer<typeof productSchema>;
+type AuditLog = z.infer<typeof auditLogSchema>;
+
 type CreateProductRequest = z.infer<typeof createProductRequestSchema>;
+type CreateAuditLogRequest = z.infer<typeof createAuditLogRequestSchema>;
 type ApiGatewayLambdaHandler = (
   event: APIGatewayProxyEvent,
 ) => Promise<APIGatewayProxyResult>;
 
-interface uploadImageRequest {
+interface UploadImageRequest {
   filename: 'string';
   base64: 'string';
 }
 
+interface AuditLogOldNewValue {
+  // JSON string
+  oldValue?: string;
+  newValue?: string;
+}
+
+type AuditLogChangeType = AuditLog['changeType'];
+type AuditLogEntity = AuditLog['entityName'];
+
 interface EventBridgeEVent {
-  source: string;
-  detail: string;
-  detailType: object;
+  source: AuditLogEntity;
+  detail: AuditLogOldNewValue;
+  'detail-type': AuditLogChangeType;
+}
+
+interface AuditLogActionCreateRequest {
+  newValue?: Product;
+  oldValue?: Product;
+  entityName: string;
+  action: AuditLogChangeType;
 }
 
 export {
   Env,
   Product,
+  AuditLog,
+  AuditLogChangeType,
   EventBridgeEVent,
-  uploadImageRequest,
+  UploadImageRequest,
   CreateProductRequest,
+  CreateAuditLogRequest,
   ApiGatewayLambdaHandler,
+  AuditLogActionCreateRequest,
 };
